@@ -6,24 +6,25 @@ async function addWeight() {
   const date = new Date().toISOString();
   const { data, error } = await supabasePublicClient
     .from("weights")
-    .insert([{ date: date, weight: weight, run: FALSE, strength: FALSE }])
+    .insert([{ date: date, weight: weight, run: false, strength: false }])
     .select();
 
   if (error) {
     console.error(error);
   }
-
+  window.location.reload();
   document.getElementById("weight").value = "";
 }
 
 //Display Table
-readWeights();
+
 async function readWeights() {
   let { data: weights, error } = await supabasePublicClient
     .from("weights")
     .select("*");
 
   const tableBody = document.querySelector("#weightTbl tbody");
+  tableBody.innerHTML = ""; // Clear old rows
 
   weights.forEach(addRow);
 
@@ -31,17 +32,41 @@ async function readWeights() {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-    <td>${data.date}</td>
-    <td>${data.weight}</td>
-    <td>
-    <input type="checkbox" id="runCheckBox" name="runCheckbox" />
-    ${data.run}
-    </td>
-    <td>
-      <input type="checkbox" id="strengthCheckBox" name="strengthCheckbox" />
-    ${data.strength}</td>
-  `;
-
+      <td>${new Date(data.date).toLocaleDateString()}</td>
+      <td>${data.weight}</td>
+      <td><input type="checkbox" class="runCheckbox" ${
+        data.run ? "checked" : ""
+      }></td>
+      <td><input type="checkbox" class="strengthCheckbox" ${
+        data.strength ? "checked" : ""
+      }></td>
+    `;
     tableBody.appendChild(row);
+
+    const runCheckbox = row.querySelector(".runCheckbox");
+    const strengthCheckbox = row.querySelector(".strengthCheckbox");
+    runCheckbox.addEventListener("change", () => {
+      updateCheckBox(data.id, "run", runCheckbox.checked);
+    });
+
+    strengthCheckbox.addEventListener("change", () => {
+      updateCheckBox(data.id, "strength", strengthCheckbox.checked);
+    });
   }
 }
+
+//Update Check Boxes
+
+async function updateCheckBox(id, column, value) {
+  const { data, error } = await supabasePublicClient
+    .from("weights")
+    .update({ [column]: value })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error(error);
+  }
+}
+
+readWeights();

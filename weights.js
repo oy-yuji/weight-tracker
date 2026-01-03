@@ -43,13 +43,13 @@ async function readWeights() {
     row.innerHTML = `
       <td>${localDateStr}</td>
       <td>${data.weight}</td>
-      <td><input type="checkbox" class="runCheckbox" ${
+      <td><input type="checkbox" class="runCheckbox form-check-input" ${
         data.run ? "checked" : ""
       }></td>
-      <td><input type="checkbox" class="strengthCheckbox" ${
+      <td><input type="checkbox" class="strengthCheckbox form-check-input" ${
         data.strength ? "checked" : ""
       }></td>
-      <td><button class="deleteBtn">Delete</button></td>
+      <td><button class="deleteBtn btn btn-danger btn-sm"> Delete</button></td>
     `;
     tableBody.appendChild(row);
 

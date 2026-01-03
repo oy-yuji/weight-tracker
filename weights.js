@@ -49,6 +49,7 @@ async function readWeights() {
       <td><input type="checkbox" class="strengthCheckbox" ${
         data.strength ? "checked" : ""
       }></td>
+      <td><button class="deleteBtn">Delete</button></td>
     `;
     tableBody.appendChild(row);
 
@@ -60,6 +61,24 @@ async function readWeights() {
 
     strengthCheckbox.addEventListener("change", () => {
       updateCheckBox(data.id, "strength", strengthCheckbox.checked);
+    });
+
+    const deleteBtn = row.querySelector(".deleteBtn");
+    deleteBtn.addEventListener("click", async () => {
+      const confirmed = confirm("Are you sure you want to delete this entry?");
+      if (!confirmed) return;
+
+      const { data: deletedData, error } = await supabasePublicClient
+        .from("weights")
+        .delete()
+        .eq("id", data.id);
+
+      if (error) {
+        console.error("Delete error:", error);
+        alert("Failed to delete the entry.");
+      } else {
+        await readWeights(); // Refresh table after delete
+      }
     });
   }
 }

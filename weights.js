@@ -30,9 +30,18 @@ async function readWeights() {
 
   function addRow(data) {
     const row = document.createElement("tr");
+    const utcDate = new Date(data.date);
 
+    // Create a local date from the UTC year/month/day to avoid timezone shift
+    const localDate = new Date(
+      utcDate.getUTCFullYear(),
+      utcDate.getUTCMonth(),
+      utcDate.getUTCDate()
+    );
+
+    const localDateStr = localDate.toLocaleDateString();
     row.innerHTML = `
-      <td>${new Date(data.date).toLocaleDateString()}</td>
+      <td>${localDateStr}</td>
       <td>${data.weight}</td>
       <td><input type="checkbox" class="runCheckbox" ${
         data.run ? "checked" : ""

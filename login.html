@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>Password</h1>
     <form action="">
-        <label for="password"></label><br>
-        <input type="text" id="password" name="password"><br><br>
-        <input type="submit" value="Submit">
+      <label for="password"></label><br />
+      <input type="text" id="password" name="password" /><br /><br />
+      <input type="submit" value="Submit" />
     </form>
+    <p id="loadedPassword"></p>
 
-
-    <script src="script.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="scripts.js"></script> 
+    <script>console.log(supabase)</script>
+  </body>
 </html>

@@ -19,9 +19,13 @@ async function addWeight() {
 //Display Table
 
 async function readWeights() {
+
   let { data: weights, error } = await supabasePublicClient
     .from("weights")
     .select("*");
+
+  // Sort by date descending (newest first)
+  weights.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const tableBody = document.querySelector("#weightTbl tbody");
   tableBody.innerHTML = ""; // Clear old rows
